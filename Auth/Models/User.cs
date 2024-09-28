@@ -73,12 +73,6 @@ namespace CustomerRewards.Auth.Entities
 
         public bool Active { get; set; }
 
-        [MaxLength(200)]
-        public string ProviderUserId { get; set; }
-
-        [MaxLength(50)]
-        public string Provider { get; set; }
-
         public virtual ICollection<UserRole> Roles { get; set; }
 
         public virtual ICollection<UserToken> UserTokens { get; set; }
@@ -89,8 +83,5 @@ namespace CustomerRewards.Auth.Entities
 
         [MaxLength(13)]
         public string UniqueIdentifier { get; set; }
-
-        [MaxLength(100)]
-        public string PermanentResidence { get; set; }
     }
 }

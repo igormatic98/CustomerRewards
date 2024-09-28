@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -146,6 +145,12 @@ public class AuthenticationService : IAuthenticationService
             new Claim("FullName", user.FirstName + " " + user.LastName)
         };
 
+        // Dodaj role u claims
+        var roles = await userManager.GetRolesAsync(user);
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role, ClaimValueTypes.String));
+        }
         var userClaims = await userManager.GetClaimsAsync(user);
 
         foreach (var claim in userClaims)

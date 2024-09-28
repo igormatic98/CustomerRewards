@@ -59,8 +59,6 @@ public static class Seed
                 FirstName = "Igor",
                 LastName = "Matic",
                 Email = "agent@gmail.com",
-                AlternativeEmail = "igormatic@gmail.com",
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
                 EmailConfirmed = true,
                 PhoneNumber = "",
                 Active = true
