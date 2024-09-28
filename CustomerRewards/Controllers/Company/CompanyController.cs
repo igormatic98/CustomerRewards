@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using CustomerRewards.Auth.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,9 +12,9 @@ public class CompanyController : ControllerBase
 {
     public CompanyController() { }
 
-    [HttpGet("add")]
-    [Authorize(Roles = "Agent")]
-    public async Task<IActionResult> GetCompanyDetails()
+    [HttpPost]
+    [Authorize(Roles = Role.DIRECTOR)]
+    public async Task<IActionResult> CreateCompany()
     {
         return Ok();
     }
