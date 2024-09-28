@@ -1,5 +1,6 @@
 using CustomerRewards.Auth;
 using CustomerRewards.Auth.TokenClaimGenerator;
+using Infrastracture.Seed;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -30,6 +31,7 @@ builder.Services
             )
         };
     });
+
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -37,6 +39,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    await Seed.SeedAsync(app, builder.Configuration, builder.Environment);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

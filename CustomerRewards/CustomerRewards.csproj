@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Auth\Auth.csproj" />
+    <ProjectReference Include="..\Infrastracture\Infrastracture.csproj" />
   </ItemGroup>
 
 </Project>
