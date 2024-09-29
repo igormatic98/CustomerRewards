@@ -21,4 +21,6 @@ public class Campaign
 
     [ForeignKey("CompanyId")]
     public virtual Company Company { get; set; }
+
+    public virtual List<AgentCampaign> AgentCampaigns { get; set; }
 }

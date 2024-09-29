@@ -1,6 +1,7 @@
 ﻿using CustomerRewards.Auth.Dtos;
 using CustomerRewards.Auth.Entities;
 using CustomerRewards.Auth.TokenClaimGenerator;
+using CustomerRewards.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace CustomerRewards.Auth.Services;
 
 public class AuthenticationService : IAuthenticationService
 {
-    private readonly UserContext userContext;
+    private readonly DatabaseContext databaseContext;
     private readonly UserManager<User> userManager;
     private readonly SignInManager<User> signInManager;
     readonly IConfiguration configuration;
@@ -24,7 +25,7 @@ public class AuthenticationService : IAuthenticationService
     private IEnumerable<IClaimInjectService> ClaimInjectServices { get; }
 
     public AuthenticationService(
-        UserContext userContext,
+        DatabaseContext databaseContext,
         UserManager<User> userManager,
         SignInManager<User> signInManager,
         IConfiguration configuration,
@@ -32,7 +33,8 @@ public class AuthenticationService : IAuthenticationService
         IEnumerable<IClaimInjectService> claimInjectServices
     )
     {
-        this.userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
+        this.databaseContext =
+            databaseContext ?? throw new ArgumentNullException(nameof(DatabaseContext));
         this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         this.signInManager =
             signInManager ?? throw new ArgumentNullException(nameof(signInManager));
@@ -62,10 +64,10 @@ public class AuthenticationService : IAuthenticationService
             throw new Exception("Login failed - Wrong user name or password");
 
         //brisanje refresh token-a korinsika koji su istekli prije vise od 7 dana
-        var refreshTokens = userContext.RefreshTokens.Where(
+        var refreshTokens = databaseContext.RefreshTokens.Where(
             rt => rt.UserId == dbUser.Id && rt.ExpiresAt < DateTime.UtcNow.Date.AddDays(-7)
         );
-        userContext.RefreshTokens.RemoveRange(refreshTokens);
+        databaseContext.RefreshTokens.RemoveRange(refreshTokens);
 
         return new Token
         {
@@ -76,7 +78,7 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task Revoke(string refreshToken)
     {
-        var rt = await userContext.RefreshTokens
+        var rt = await databaseContext.RefreshTokens
             .Include("User")
             .FirstOrDefaultAsync(rt => rt.Token.Equals(refreshToken));
 
@@ -89,21 +91,21 @@ public class AuthenticationService : IAuthenticationService
             else if (DateTime.UtcNow >= rt.ExpiresAt)
             {
                 RevokeRefreshToken(rt, "Expired");
-                userContext.RefreshTokens.Update(rt);
-                await userContext.SaveChangesAsync();
+                databaseContext.RefreshTokens.Update(rt);
+                await databaseContext.SaveChangesAsync();
             }
             else
             {
                 RevokeRefreshToken(rt, "User logged out");
-                userContext.RefreshTokens.Update(rt);
-                await userContext.SaveChangesAsync();
+                databaseContext.RefreshTokens.Update(rt);
+                await databaseContext.SaveChangesAsync();
             }
         }
     }
 
     public async Task<Token> RefreshTokenAsync(string refreshToken, string oldAccessToken)
     {
-        var rt = await userContext.RefreshTokens
+        var rt = await databaseContext.RefreshTokens
             .Include("User")
             .FirstOrDefaultAsync(rt => rt.Token.Equals(refreshToken));
 
@@ -116,14 +118,14 @@ public class AuthenticationService : IAuthenticationService
             else if (DateTime.UtcNow >= rt.ExpiresAt)
             {
                 RevokeRefreshToken(rt, "Expired");
-                userContext.RefreshTokens.Update(rt);
-                await userContext.SaveChangesAsync();
+                databaseContext.RefreshTokens.Update(rt);
+                await databaseContext.SaveChangesAsync();
             }
             else
             {
                 RevokeRefreshToken(rt, "Used to generate new Access Token");
-                userContext.RefreshTokens.Update(rt);
-                await userContext.SaveChangesAsync();
+                databaseContext.RefreshTokens.Update(rt);
+                await databaseContext.SaveChangesAsync();
 
                 return new Token
                 {
@@ -210,7 +212,7 @@ public class AuthenticationService : IAuthenticationService
 
             var duration = int.Parse(configuration["Auth:RefreshExpiration"]);
 
-            userContext.RefreshTokens.Add(
+            databaseContext.RefreshTokens.Add(
                 new RefreshToken()
                 {
                     UserId = user.Id,
@@ -221,7 +223,7 @@ public class AuthenticationService : IAuthenticationService
                 }
             );
 
-            await userContext.SaveChangesAsync();
+            await databaseContext.SaveChangesAsync();
 
             return refreshToken;
         }
@@ -229,7 +231,7 @@ public class AuthenticationService : IAuthenticationService
 
     private async Task RevokeAllRefreshTokensAsync(RefreshToken refreshToken, string reason)
     {
-        var refreshTokens = userContext.RefreshTokens.Where(
+        var refreshTokens = databaseContext.RefreshTokens.Where(
             rt =>
                 rt.UserId == refreshToken.UserId
                 && rt.RevokedAt == null
@@ -239,9 +241,9 @@ public class AuthenticationService : IAuthenticationService
         foreach (RefreshToken rt in refreshTokens)
         {
             RevokeRefreshToken(rt, reason);
-            userContext.RefreshTokens.Update(rt);
+            databaseContext.RefreshTokens.Update(rt);
         }
-        await userContext.SaveChangesAsync();
+        await databaseContext.SaveChangesAsync();
     }
 
     private void RevokeRefreshToken(RefreshToken refreshToken, string reason)

@@ -1,19 +1,37 @@
 ﻿using CustomerRewards.Auth.Entities;
+using Domain.Entities.Catalog;
+using Domain.Entities.Company;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace CustomerRewards.Auth
+namespace CustomerRewards.Infrastructure
 {
-    public class UserContext
+    public class DatabaseContext
         : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
-        public UserContext(DbContextOptions<UserContext> dbContextOptions)
+        public DatabaseContext(DbContextOptions<DatabaseContext> dbContextOptions)
             : base(dbContextOptions)
         {
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
+        #region Auth
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        #endregion
+
+        #region Catalog
+        public DbSet<Address> Address { get; set; }
+        #endregion
+
+        #region Company
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Campaign> Campaigns { get; set; }
+        public DbSet<Agent> Agents { get; set; }
+        public DbSet<AgentCampaign> AgentCampaigns { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<CustomerReward> CustomersRewards { get; set; }
+        public DbSet<UsedReward> UsedRewards { get; set; }
+        #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

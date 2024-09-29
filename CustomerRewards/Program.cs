@@ -1,5 +1,6 @@
 using CustomerRewards.Auth;
 using CustomerRewards.Auth.TokenClaimGenerator;
+using Infrastracture;
 using Infrastracture.Seed;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -8,7 +9,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-AuthConfigure.Register(builder.Services, builder.Configuration, builder.Environment);
+InfrastractureConfigure.Register(builder.Services, builder.Configuration, builder.Environment);
 builder.Services
     .AddAuthentication(opt =>
     {

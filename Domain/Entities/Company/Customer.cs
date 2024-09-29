@@ -22,8 +22,15 @@ public class Customer
     [Required]
     public string Dob { get; set; }
 
-    public int AddressId { get; set; }
+    [Required]
+    public int Age { get; set; }
 
-    [ForeignKey(nameof(AddressId))]
-    public virtual Address Address { get; set; }
+    public int HomeId { get; set; }
+    public int OfficeId { get; set; }
+
+    [ForeignKey(nameof(HomeId))]
+    public virtual Address Home { get; set; }
+
+    [ForeignKey(nameof(OfficeId))]
+    public virtual Address Office { get; set; }
 }

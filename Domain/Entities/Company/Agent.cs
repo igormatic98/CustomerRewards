@@ -11,7 +11,9 @@ public class Agent
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public int UserId { get; set; }
+
+    [Required]
+    public Guid UserId { get; set; }
 
     [Required]
     public string ContractNumber { get; set; }
@@ -22,4 +24,6 @@ public class Agent
 
     [ForeignKey("UserId")]
     public virtual User User { get; set; }
+
+    public virtual List<ICollection<AgentCampaign>> AgentCampaigns { get; set; }
 }

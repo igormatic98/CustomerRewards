@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.Company;
 
+[PrimaryKey(nameof(AgentId), nameof(CampaignId))]
 public class AgentCampaign
 {
     public int AgentId { get; set; }
