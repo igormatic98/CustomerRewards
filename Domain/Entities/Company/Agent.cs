@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using CustomerRewards.Auth.Entities;
 using Microsoft.EntityFrameworkCore;
-using Domain.Entities.Catalog;
+using CustomerRewards.Catalog.Entities;
 
-namespace Domain.Entities.Company;
+namespace CustomerRewards.Company.Entities;
 
 [PrimaryKey(nameof(Id))]
 public class Agent
@@ -25,5 +25,5 @@ public class Agent
     [ForeignKey("UserId")]
     public virtual User User { get; set; }
 
-    public virtual List<ICollection<AgentCampaign>> AgentCampaigns { get; set; }
+    public virtual ICollection<AgentCampaign> AgentCampaigns { get; set; }
 }

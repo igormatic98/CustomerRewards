@@ -1,9 +1,9 @@
-﻿using Domain.Entities.Catalog;
+﻿using CustomerRewards.Catalog.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.Company;
+namespace CustomerRewards.Company.Entities;
 
 [PrimaryKey(nameof(Id))]
 [Microsoft.EntityFrameworkCore.Index(nameof(ExternalId), IsUnique = true)]

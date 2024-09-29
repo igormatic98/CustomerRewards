@@ -1,6 +1,7 @@
 ﻿using CustomerRewards.Auth.Entities;
-using Domain.Entities.Catalog;
-using Domain.Entities.Company;
+using CustomerRewards.Catalog.Entities;
+using CustomerRewards.Company.Entities;
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +25,7 @@ namespace CustomerRewards.Infrastructure
         #endregion
 
         #region Company
-        public DbSet<Company> Companies { get; set; }
+        public DbSet<CustomerRewards.Company.Entities.Company> Companies { get; set; }
         public DbSet<Campaign> Campaigns { get; set; }
         public DbSet<Agent> Agents { get; set; }
         public DbSet<AgentCampaign> AgentCampaigns { get; set; }
@@ -37,7 +38,14 @@ namespace CustomerRewards.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.HasDefaultSchema("Auth");
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var namespaceParts = entityType.ClrType.Namespace?.Split('.');
+
+                if (namespaceParts != null && namespaceParts.Length >= 3)
+
+                    entityType.SetSchema(namespaceParts[1]);
+            }
 
             modelBuilder.Entity<UserRole>(userRole =>
             {

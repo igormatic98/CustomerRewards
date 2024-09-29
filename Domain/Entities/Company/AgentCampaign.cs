@@ -1,18 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.Company;
+namespace CustomerRewards.Company.Entities;
 
 [PrimaryKey(nameof(AgentId), nameof(CampaignId))]
 public class AgentCampaign
 {
     public int AgentId { get; set; }
 
-    [ForeignKey("AgentId")]
+    [ForeignKey(nameof(AgentId))]
     public virtual Agent Agent { get; set; }
 
     public int CampaignId { get; set; }
 
-    [ForeignKey("CampaignId")]
+    [ForeignKey(nameof(CampaignId))]
     public virtual Campaign Campaign { get; set; }
 }

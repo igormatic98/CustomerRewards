@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace Domain.Entities.Company;
+namespace CustomerRewards.Company.Entities;
 
 [PrimaryKey(nameof(Id))]
 public class Campaign
@@ -22,5 +22,5 @@ public class Campaign
     [ForeignKey("CompanyId")]
     public virtual Company Company { get; set; }
 
-    public virtual List<AgentCampaign> AgentCampaigns { get; set; }
+    public virtual ICollection<AgentCampaign> AgentCampaigns { get; set; }
 }

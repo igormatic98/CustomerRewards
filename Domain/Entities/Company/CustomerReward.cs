@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.Company;
+namespace CustomerRewards.Company.Entities;
 
 [PrimaryKey(nameof(CustomerId), nameof(CampaignId))]
 public class CustomerReward

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.Catalog;
+namespace CustomerRewards.Catalog.Entities;
 
 [PrimaryKey(nameof(Id))]
 public class Address
