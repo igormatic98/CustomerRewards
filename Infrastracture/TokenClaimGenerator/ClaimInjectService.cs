@@ -53,6 +53,22 @@ public class ClaimInjectService : IClaimInjectService
                 );
             }
         }
+        if (roles.Any(r => r == Role.SELLER))
+        {
+            var activeCampaignId = await databaseContext.Campaigns
+                .Where(c => c.StartDate <= currentDate && c.EndDate >= currentDate)
+                .FirstOrDefaultAsync();
+            if (activeCampaignId != null)
+            {
+                claims.Add(
+                    new Claim(
+                        CustomClaimTypes.ActiveCampaign,
+                        activeCampaignId.ToString()!,
+                        ClaimValueTypes.Integer32
+                    )
+                );
+            }
+        }
         return claims;
     }
 }

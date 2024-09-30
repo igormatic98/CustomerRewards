@@ -7,6 +7,7 @@ public class Role : IdentityRole<Guid>
     public const string AGENT = "Agent";
     public const string CUSTOMER = "Customer";
     public const string DIRECTOR = "Director";
+    public const string SELLER = "Seller";
 
     public Role()
         : base() { }

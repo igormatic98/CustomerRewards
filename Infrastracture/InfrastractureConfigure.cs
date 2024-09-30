@@ -6,6 +6,7 @@ using CustomerRewards.Infrastructure;
 using Infrastracture.Mapper;
 using Infrastracture.Services.CustomerRewardService;
 using Infrastracture.Services.ExternalCustomerService;
+using Infrastracture.Services.UsedRewardService;
 using Infrastracture.TokenClaimGenerator;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -59,6 +60,7 @@ namespace Infrastracture
             #region Services
             services.AddScoped<ExternalCustomerService>();
             services.AddScoped<CustomerRewardService>();
+            services.AddScoped<UsedRewardService>();
             #endregion
         }
     }

@@ -1,6 +1,7 @@
 ﻿using CustomerRewards.Auth.Entities;
 using CustomerRewards.Company.Entities;
 using CustomerRewards.Infrastructure;
+using Infrastracture.Dtos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -25,7 +26,7 @@ public static class Seed
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
         var databaseContext = services.GetRequiredService<DatabaseContext>();
 
-        string[] roles = { Role.DIRECTOR, Role.AGENT, Role.CUSTOMER };
+        string[] roles = { Role.DIRECTOR, Role.AGENT, Role.CUSTOMER, Role.SELLER };
         foreach (var role in roles)
         {
             if (!await roleManager.RoleExistsAsync(role))
@@ -51,100 +52,128 @@ public static class Seed
 
                 if (role == Role.CUSTOMER)
                     await roleManager.CreateAsync(new Role { Name = role, Description = "Kupac" });
+
+                if (role == Role.SELLER)
+                    await roleManager.CreateAsync(
+                        new Role { Name = role, Description = "Prodavac" }
+                    );
             }
         }
-        //kreiranje direktora
-        await CreateUser(
-            new User
-            {
-                UserName = "director@gmail.com",
-                FirstName = "Petar",
-                LastName = "Markovic",
-                Email = "director@gmail.com",
-                EmailConfirmed = true,
-                PhoneNumber = "",
-                Active = true
-            },
-            Role.DIRECTOR,
-            userManager,
-            databaseContext
-        );
 
-        //kreiranje agenta
-        await CreateUser(
-            new User
+        await CreateUsers(
+            new List<UserSeedDto>
             {
-                UserName = "agent@gmail.com",
-                FirstName = "Igor",
-                LastName = "Matic",
-                Email = "agent@gmail.com",
-                EmailConfirmed = true,
-                PhoneNumber = "",
-                Active = true
-            },
-            Role.AGENT,
-            userManager,
-            databaseContext
+                new UserSeedDto(
+                    new User
+                    {
+                        UserName = "director@gmail.com",
+                        FirstName = "Petar",
+                        LastName = "Markovic",
+                        Email = "director@gmail.com",
+                        EmailConfirmed = true,
+                        PhoneNumber = "",
+                        Active = true
+                    },
+                    Role.DIRECTOR,
+                    userManager,
+                    databaseContext
+                ),
+                new UserSeedDto(
+                    new User
+                    {
+                        UserName = "agent@gmail.com",
+                        FirstName = "Igor",
+                        LastName = "Matic",
+                        Email = "agent@gmail.com",
+                        EmailConfirmed = true,
+                        PhoneNumber = "",
+                        Active = true
+                    },
+                    Role.AGENT,
+                    userManager,
+                    databaseContext
+                ),
+                new UserSeedDto(
+                    new User
+                    {
+                        UserName = "seller@gmail.com",
+                        FirstName = "Dzenan",
+                        LastName = "Smajic",
+                        Email = "seller@gmail.com",
+                        EmailConfirmed = true,
+                        PhoneNumber = "",
+                        Active = true
+                    },
+                    Role.SELLER,
+                    userManager,
+                    databaseContext
+                )
+            }
         );
     }
 
-    public static async Task CreateUser(
-        User user,
-        string roleName,
-        UserManager<User> userManager,
-        DatabaseContext databaseContext
-    )
+    public static async Task CreateUsers(List<UserSeedDto> users)
     {
-        // Kreirajte defaultnog korisnika ako ne postoji
-        var defaultUser = await userManager.FindByEmailAsync(user.Email);
-        if (defaultUser == null)
+        foreach (var userDto in users)
         {
-            var result = await userManager.CreateAsync(user, Password);
-            if (result.Succeeded)
+            // Kreirajte defaultnog korisnika ako ne postoji
+            var defaultUser = await userDto.UserManager.FindByEmailAsync(userDto.User.Email);
+            if (defaultUser == null)
             {
-                await userManager.AddToRoleAsync(user, roleName);
-
-                //Ovaj dio se moze zakomentarisati ukoliko se zeli testirati preko apija, na ovaj nacin sam skratio posao
-                //nije toliki fokus na samoj kompaniji
-                using (var transaction = await databaseContext.Database.BeginTransactionAsync())
+                var result = await userDto.UserManager.CreateAsync(userDto.User, Password);
+                if (result.Succeeded)
                 {
-                    try
+                    await userDto.UserManager.AddToRoleAsync(userDto.User, userDto.RoleName);
+
+                    //Ovaj dio se moze zakomentarisati ukoliko se zeli testirati preko apija, na ovaj nacin sam skratio posao
+                    //nije toliki fokus na samoj kompaniji
+                    using (
+                        var transaction =
+                            await userDto.DatabaseContext.Database.BeginTransactionAsync()
+                    )
                     {
-                        if (roleName == Role.AGENT)
+                        try
                         {
-                            var agent = new Agent { UserId = user.Id, ContractNumber = "24-T-12" };
-                            await databaseContext.Agents.AddAsync(agent);
-                            await databaseContext.SaveChangesAsync();
-
-                            var company = new Company
+                            if (userDto.RoleName == Role.AGENT)
                             {
-                                Name = "Tesla XY",
-                                Code = "21-AK1",
-                                ContactInfo = "057/212-223",
-                                Campaigns = new List<Campaign>
+                                var agent = new Agent
                                 {
-                                    new Campaign
+                                    UserId = userDto.User.Id,
+                                    ContractNumber = "24-T-12"
+                                };
+                                await userDto.DatabaseContext.Agents.AddAsync(agent);
+                                await userDto.DatabaseContext.SaveChangesAsync();
+
+                                var company = new Company
+                                {
+                                    Name = "Tesla XY",
+                                    Code = "21-AK1",
+                                    ContactInfo = "057/212-223",
+                                    Campaigns = new List<Campaign>
                                     {
-                                        Name = "Energija buducnosti ",
-                                        StartDate = new DateTime(DateTime.Now.Year, 10, 1),
-                                        EndDate = new DateTime(DateTime.Now.Year, 11, 15),
-                                        AgentCampaigns = new List<AgentCampaign>
+                                        new Campaign
                                         {
-                                            { new AgentCampaign { AgentId = agent.Id } }
+                                            Name = "Energija buducnosti ",
+                                            StartDate = new DateTime(DateTime.Now.Year, 10, 1),
+                                            EndDate = new DateTime(DateTime.Now.Year, 11, 15),
+                                            AgentCampaigns = new List<AgentCampaign>
+                                            {
+                                                { new AgentCampaign { AgentId = agent.Id } }
+                                            }
                                         }
-                                    }
-                                },
-                            };
+                                    },
+                                };
 
-                            await databaseContext.Companies.AddAsync(company);
-                            await databaseContext.SaveChangesAsync();
+                                await userDto.DatabaseContext.Companies.AddAsync(company);
+                                await userDto.DatabaseContext.SaveChangesAsync();
 
-                            await transaction.CommitAsync();
+                                await transaction.CommitAsync();
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        await transaction.RollbackAsync();
+                        catch (Exception ex)
+                        {
+                            await transaction.RollbackAsync();
+                        }
                     }
                 }
             }
