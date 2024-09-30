@@ -34,11 +34,17 @@ public class CustomerRewardService
         var agentId = tokenReaderService.GetAgentId();
         var campaignId = tokenReaderService.GetCampaignId();
 
+        var numberOfAddedCustomerByAgent = await databaseContext.CustomersRewards
+            .Where(cr => cr.AgentId == agentId && cr.CampaignId == campaignId)
+            .CountAsync();
+        if (numberOfAddedCustomerByAgent > 5)
+            throw new Exception("Agent added already max(5) customer to reward on this campaign.");
+
         var isRewardAlradyGiven = await databaseContext.CustomersRewards.AnyAsync(
             cr => cr.Customer.ExternalId == customerId && cr.CampaignId == campaignId
         );
         if (isRewardAlradyGiven)
-            throw new Exception("Reward is alrady given to this customer.");
+            throw new Exception("Reward is already given to this customer.");
 
         if (campaignId != 0)
         {

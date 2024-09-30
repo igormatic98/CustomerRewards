@@ -57,6 +57,7 @@ public class ClaimInjectService : IClaimInjectService
         {
             var activeCampaignId = await databaseContext.Campaigns
                 .Where(c => c.StartDate <= currentDate && c.EndDate >= currentDate)
+                .Select(c => c.Id)
                 .FirstOrDefaultAsync();
             if (activeCampaignId != null)
             {

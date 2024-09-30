@@ -1,4 +1,5 @@
 ﻿using CustomerRewards.Auth.Entities;
+using Infrastracture.Services.UsedRewardService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,12 +11,18 @@ namespace CustomerRewards.Controllers.UsedReward;
 [ApiController]
 public class UsedRewardController : ControllerBase
 {
-    public UsedRewardController() { }
+    private readonly UsedRewardService usedRewardService;
 
-    [HttpPost("{customerId}/{rewardAmount}")]
-    [Authorize(Roles = Role.SELLER)]
-    public async Task<IActionResult> UsedRewardByCustomer()
+    public UsedRewardController(UsedRewardService usedRewardService)
     {
+        this.usedRewardService = usedRewardService;
+    }
+
+    [HttpPost("{customerId}/{usedAmount}")]
+    [Authorize(Roles = Role.SELLER)]
+    public async Task<IActionResult> UsedRewardByCustomer(int customerId, decimal usedAmount)
+    {
+        await usedRewardService.CustomerUsedReward(customerId, usedAmount);
         return Ok();
     }
 }
