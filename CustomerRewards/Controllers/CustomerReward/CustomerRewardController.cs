@@ -18,11 +18,11 @@ public class CustomerRewardController : ControllerBase
         this.customerRewardService = customerRewardService;
     }
 
-    [HttpPost]
+    [HttpPost("{customerId}/{rewardAmount}")]
     [Authorize(Roles = Role.AGENT)]
-    public async Task<IActionResult> CreateRewardForCustomer()
+    public async Task<IActionResult> CreateRewardForCustomer(int customerId, decimal rewardAmount)
     {
-        await customerRewardService.GetExternalCustomer(1);
+        await customerRewardService.GetExternalCustomer(customerId, rewardAmount);
         return Ok();
     }
 }

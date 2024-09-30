@@ -20,7 +20,7 @@ public class Customer
     public string Ssn { get; set; }
 
     [Required]
-    public string Dob { get; set; }
+    public DateTime Dob { get; set; }
 
     [Required]
     public int Age { get; set; }
