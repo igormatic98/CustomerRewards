@@ -4,6 +4,7 @@ using CustomerRewards.Auth.Services;
 using CustomerRewards.Auth.TokenClaimGenerator;
 using CustomerRewards.Infrastructure;
 using Infrastracture.Mapper;
+using Infrastracture.Services.CsvReportJob;
 using Infrastracture.Services.CustomerRewardService;
 using Infrastracture.Services.ExternalCustomerService;
 using Infrastracture.Services.UsedRewardService;
@@ -61,6 +62,7 @@ namespace Infrastracture
             services.AddScoped<ExternalCustomerService>();
             services.AddScoped<CustomerRewardService>();
             services.AddScoped<UsedRewardService>();
+            services.AddScoped<GenerateCsvFileService>();
             #endregion
         }
     }

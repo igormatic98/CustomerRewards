@@ -1,5 +1,6 @@
 ﻿using Hangfire;
 using Hangfire.SqlServer;
+using Infrastracture.Services.CsvReportJob;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ public static class HangfireConfigure
         );
 
         services.AddHangfireServer();
+        services.AddScoped<CsvReportJob>();
     }
 
     public static void InitializeJobs(
@@ -28,6 +30,7 @@ public static class HangfireConfigure
     )
     {
         app.UseHangfireDashboard();
+
         /*  RecurringJob.AddOrUpdate<>(
               "",
               cj =>,
