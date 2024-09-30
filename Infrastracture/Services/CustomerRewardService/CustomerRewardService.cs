@@ -78,7 +78,7 @@ public class CustomerRewardService
                         bool officeExists = await AddressExists(findPersonResult.Office);
                         if (!officeExists)
                         {
-                            office = mapper.Map<Address>(findPersonResult.Home);
+                            office = mapper.Map<Address>(findPersonResult.Office);
                             await databaseContext.Address.AddAsync(office);
                         }
                         else

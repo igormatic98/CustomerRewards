@@ -12,7 +12,7 @@ namespace Infrastracture.Seed;
 
 public static class Seed
 {
-    public const string Password = "Test123";
+    private const string Password = "Test123";
 
     public static async Task SeedAsync(
         IApplicationBuilder app,
