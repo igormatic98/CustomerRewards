@@ -1,6 +1,5 @@
-using CustomerRewards.Auth;
-using CustomerRewards.Auth.TokenClaimGenerator;
 using Infrastracture;
+using Infrastracture.HangfireJob;
 using Infrastracture.Seed;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 InfrastractureConfigure.Register(builder.Services, builder.Configuration, builder.Environment);
+HangfireConfigure.Register(builder.Services, builder.Configuration);
 builder.Services
     .AddAuthentication(opt =>
     {
@@ -60,4 +60,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+//metode joba
+app.InitializeJobs(builder);
 app.Run();
