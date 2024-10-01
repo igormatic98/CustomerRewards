@@ -10,5 +10,5 @@ public class RoleClaim : IdentityRoleClaim<Guid>
     public override Guid RoleId { get; set; }
     public override string ClaimType { get; set; }
     public override string ClaimValue { get; set; }
-    public virtual Role Role { get; set; }
+    public Role Role { get; set; }
 }

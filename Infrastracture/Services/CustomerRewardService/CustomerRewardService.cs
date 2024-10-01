@@ -33,13 +33,13 @@ public class CustomerRewardService
     {
         var agentId = tokenReaderService.GetAgentId();
         var campaignId = tokenReaderService.GetCampaignId();
-        var currentDay = DateTime.Now.Day;
+        var currentDate = DateTime.Now.Date;
         var numberOfAddedCustomerByAgent = await databaseContext.CustomersRewards
             .Where(
                 cr =>
                     cr.AgentId == agentId
                     && cr.CampaignId == campaignId
-                    && cr.RewardDate.Day == currentDay
+                    && cr.RewardDate.Date == currentDate
             )
             .CountAsync();
         if (numberOfAddedCustomerByAgent > 5)
@@ -107,16 +107,17 @@ public class CustomerRewardService
                     }
                 }
                 else
-
+                {
                     customer = await databaseContext.Customers
                         .Where(c => c.ExternalId == customerId)
                         .FirstOrDefaultAsync();
+                }
 
                 await databaseContext.CustomersRewards.AddAsync(
                     new CustomerReward
                     {
                         AgentId = agentId,
-                        CustomerId = customer.Id,
+                        CustomerId = customer!.Id,
                         CampaignId = campaignId,
                         RewardAmount = rewardAmount,
                         RewardDate = DateTime.Now
@@ -126,7 +127,7 @@ public class CustomerRewardService
                 await databaseContext.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
-            catch (Exception ex)
+            catch
             {
                 await transaction.RollbackAsync();
                 throw new Exception("Reward for customer is not added.");

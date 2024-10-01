@@ -10,5 +10,5 @@ public class UserClaim : IdentityUserClaim<Guid>
     public override Guid UserId { get; set; }
     public override string ClaimType { get; set; }
     public override string ClaimValue { get; set; }
-    public virtual User User { get; set; }
+    public User User { get; set; }
 }

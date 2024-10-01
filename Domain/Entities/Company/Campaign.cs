@@ -20,7 +20,7 @@ public class Campaign
     public int CompanyId { get; set; }
 
     [ForeignKey(nameof(CompanyId))]
-    public virtual Company Company { get; set; }
+    public Company Company { get; set; }
 
-    public virtual ICollection<AgentCampaign> AgentCampaigns { get; set; }
+    public ICollection<AgentCampaign> AgentCampaigns { get; set; }
 }

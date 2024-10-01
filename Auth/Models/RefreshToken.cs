@@ -24,5 +24,5 @@ public class RefreshToken
 
     public string RevokedReason { get; set; }
 
-    public virtual User User { get; set; }
+    public User User { get; set; }
 }

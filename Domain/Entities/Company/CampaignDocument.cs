@@ -1,5 +1,4 @@
-﻿using CustomerRewards.Company.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,5 +16,5 @@ public class CampaignDocument
     public DateTime CreatedDate { get; set; }
 
     [ForeignKey(nameof(CampaignId))]
-    public virtual Campaign Campaign { get; set; }
+    public Campaign Campaign { get; set; }
 }

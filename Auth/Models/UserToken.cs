@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerRewards.Auth.Entities;
@@ -18,5 +14,5 @@ public class UserToken : IdentityUserToken<Guid>
 
     [ProtectedPersonalData]
     public override string Value { get; set; }
-    public virtual User User { get; set; }
+    public User User { get; set; }
 }

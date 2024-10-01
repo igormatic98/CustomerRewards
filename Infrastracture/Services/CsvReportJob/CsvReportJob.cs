@@ -81,7 +81,7 @@ public class CsvReportJob
                 await databaseContext.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
-            catch (Exception ex)
+            catch
             {
                 await transaction.RollbackAsync();
                 if (System.IO.File.Exists(fullPath))

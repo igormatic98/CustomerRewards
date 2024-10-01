@@ -9,10 +9,10 @@ public class AgentCampaign
     public int AgentId { get; set; }
 
     [ForeignKey(nameof(AgentId))]
-    public virtual Agent Agent { get; set; }
+    public Agent Agent { get; set; }
 
     public int CampaignId { get; set; }
 
     [ForeignKey(nameof(CampaignId))]
-    public virtual Campaign Campaign { get; set; }
+    public Campaign Campaign { get; set; }
 }

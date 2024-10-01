@@ -18,5 +18,5 @@ public class Company
 
     public string Code { get; set; }
 
-    public virtual ICollection<Campaign> Campaigns { get; set; }
+    public ICollection<Campaign> Campaigns { get; set; }
 }

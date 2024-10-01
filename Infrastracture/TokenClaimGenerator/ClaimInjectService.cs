@@ -59,7 +59,7 @@ public class ClaimInjectService : IClaimInjectService
                 .Where(c => c.StartDate <= currentDate && c.EndDate >= currentDate)
                 .Select(c => c.Id)
                 .FirstOrDefaultAsync();
-            if (activeCampaignId != null)
+            if (activeCampaignId != 0)
             {
                 claims.Add(
                     new Claim(

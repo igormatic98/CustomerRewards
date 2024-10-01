@@ -18,9 +18,11 @@ public class UsedRewardService
     public async Task CustomerUsedReward(int customerId, decimal usedAmount)
     {
         var activeCampaignId = tokenReaderService.GetCampaignId();
-        if (activeCampaignId == 0)
 
+        if (activeCampaignId == 0)
+        {
             throw new Exception("No active campaign. Reward expired.");
+        }
 
         await databaseContext.UsedRewards.AddAsync(
             new UsedReward

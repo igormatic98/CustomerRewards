@@ -29,8 +29,8 @@ public class Customer
     public int OfficeId { get; set; }
 
     [ForeignKey(nameof(HomeId))]
-    public virtual Address Home { get; set; }
+    public Address Home { get; set; }
 
     [ForeignKey(nameof(OfficeId))]
-    public virtual Address Office { get; set; }
+    public Address Office { get; set; }
 }

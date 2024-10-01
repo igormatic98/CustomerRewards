@@ -19,7 +19,7 @@ public class Role : IdentityRole<Guid>
         Description = description;
     }
 
-    public virtual ICollection<UserRole> Users { get; set; }
-    public virtual ICollection<RoleClaim> Claims { get; set; }
+    public ICollection<UserRole> Users { get; set; }
+    public ICollection<RoleClaim> Claims { get; set; }
     public string Description { get; set; }
 }

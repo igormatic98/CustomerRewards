@@ -73,13 +73,13 @@ namespace CustomerRewards.Auth.Entities
 
         public bool Active { get; set; }
 
-        public virtual ICollection<UserRole> Roles { get; set; }
+        public ICollection<UserRole> Roles { get; set; }
 
-        public virtual ICollection<UserToken> UserTokens { get; set; }
+        public ICollection<UserToken> UserTokens { get; set; }
 
-        public virtual ICollection<UserLogin> Logins { get; set; }
+        public ICollection<UserLogin> Logins { get; set; }
 
-        public virtual ICollection<UserClaim> Claims { get; set; }
+        public ICollection<UserClaim> Claims { get; set; }
 
         [MaxLength(13)]
         public string UniqueIdentifier { get; set; }

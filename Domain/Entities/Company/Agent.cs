@@ -20,10 +20,10 @@ public class Agent
     public int? AddressId { get; set; }
 
     [ForeignKey(nameof(AddressId))]
-    public virtual Address Address { get; set; }
+    public Address Address { get; set; }
 
     [ForeignKey(nameof(UserId))]
-    public virtual User User { get; set; }
+    public User User { get; set; }
 
-    public virtual ICollection<AgentCampaign> AgentCampaigns { get; set; }
+    public ICollection<AgentCampaign> AgentCampaigns { get; set; }
 }
