@@ -22,7 +22,7 @@ public class Agent
     [ForeignKey(nameof(AddressId))]
     public virtual Address Address { get; set; }
 
-    [ForeignKey("UserId")]
+    [ForeignKey(nameof(UserId))]
     public virtual User User { get; set; }
 
     public virtual ICollection<AgentCampaign> AgentCampaigns { get; set; }

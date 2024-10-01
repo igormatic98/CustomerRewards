@@ -19,7 +19,7 @@ public class Campaign
     public DateTime EndDate { get; set; }
     public int CompanyId { get; set; }
 
-    [ForeignKey("CompanyId")]
+    [ForeignKey(nameof(CompanyId))]
     public virtual Company Company { get; set; }
 
     public virtual ICollection<AgentCampaign> AgentCampaigns { get; set; }

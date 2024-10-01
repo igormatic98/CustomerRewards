@@ -32,6 +32,7 @@ namespace CustomerRewards.Infrastructure
         public DbSet<Customer> Customers { get; set; }
         public DbSet<CustomerReward> CustomersRewards { get; set; }
         public DbSet<UsedReward> UsedRewards { get; set; }
+        public DbSet<CampaignDocument> CampaignDocuments { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
