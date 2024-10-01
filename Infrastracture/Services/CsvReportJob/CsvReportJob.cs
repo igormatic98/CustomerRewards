@@ -1,12 +1,6 @@
 ﻿using CustomerRewards.Infrastructure;
 using Infrastracture.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastracture.Services.CsvReportJob;
 
@@ -35,7 +29,7 @@ public class CsvReportJob
             .FirstOrDefaultAsync();
 
         //ako postoji kampanja zavrsena prije mjesec dana
-        if (campaign.Id != 0)
+        if (campaign! != null)
         {
             var customers = await databaseContext.UsedRewards
                 .Where(ur => ur.CampaignId == campaign.Id)

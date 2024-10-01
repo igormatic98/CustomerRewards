@@ -17,28 +17,25 @@ public class GenerateCsvFileService
 
     public async Task CreateCsv<T>(List<T> data, string fileName)
     {
-        var folderPath = Path.Combine(currentPath, configuration["csvPath"]!);
+        var folderPath = Path.Combine(currentPath, configuration["CsvSettings:csvPath"]!);
         if (!Directory.Exists(folderPath))
 
             Directory.CreateDirectory(folderPath);
 
-        var filePath = Path.Combine(folderPath, fileName);
+        var filePath = Path.Combine(folderPath, $"{fileName}.csv");
 
         if (!File.Exists(filePath))
-            File.Create(filePath);
+            using (var fileStream = File.Create(filePath)) { }
 
         using (var writer = new StreamWriter(filePath))
         using (
             var csv = new CsvWriter(
                 writer,
-                new CsvConfiguration(CultureInfo.InvariantCulture)
-                {
-                    Delimiter = ",", // Delimiter za CSV fajl, ovde koristiš zarez
-                }
+                new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ",", }
             )
         )
         {
-            await csv.WriteRecordsAsync(data); // Zapiši sve zapise (objekte) u CSV fajl
+            await csv.WriteRecordsAsync(data);
         }
     }
 }
