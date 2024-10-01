@@ -31,11 +31,11 @@ public static class HangfireConfigure
     {
         app.UseHangfireDashboard();
 
-        /*  RecurringJob.AddOrUpdate<>(
-              "",
-              cj =>,
-              Cron.Daily(09, 00),
-              new RecurringJobOptions() { TimeZone = TimeZoneInfo.Local }
-          );*/
+        RecurringJob.AddOrUpdate<CsvReportJob>(
+            "Reports",
+            cj => cj.FindCustomersWithSuccessfulBuy(),
+            Cron.Daily(09, 00),
+            new RecurringJobOptions() { TimeZone = TimeZoneInfo.Local }
+        );
     }
 }
