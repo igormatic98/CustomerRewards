@@ -28,8 +28,4 @@
     <ProjectReference Include="..\Infrastracture\Infrastracture.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Reports\" />
-  </ItemGroup>
-
 </Project>

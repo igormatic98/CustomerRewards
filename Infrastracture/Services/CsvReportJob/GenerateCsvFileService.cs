@@ -8,16 +8,14 @@ namespace Infrastracture.Services.CsvReportJob;
 public class GenerateCsvFileService
 {
     private readonly IConfiguration configuration;
-    private readonly string currentPath = Directory.GetCurrentDirectory();
 
     public GenerateCsvFileService(IConfiguration configuration)
     {
         this.configuration = configuration;
     }
 
-    public async Task CreateCsv<T>(List<T> data, string fileName)
+    public async Task CreateCsv<T>(List<T> data, string folderPath, string fileName)
     {
-        var folderPath = Path.Combine(currentPath, configuration["CsvSettings:csvPath"]!);
         if (!Directory.Exists(folderPath))
 
             Directory.CreateDirectory(folderPath);
