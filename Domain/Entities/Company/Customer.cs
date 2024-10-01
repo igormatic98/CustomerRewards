@@ -5,6 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerRewards.Company.Entities;
 
+/// <summary>
+/// Kupac, podaci se kupe uz pomoc eksternog apija
+/// ExternalId pretstavlja id iz externe tabele, unique je da se isti ne bi mogao dva puta pojaviti
+/// </summary>
 [PrimaryKey(nameof(Id))]
 [Microsoft.EntityFrameworkCore.Index(nameof(ExternalId), IsUnique = true)]
 public class Customer

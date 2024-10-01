@@ -2,6 +2,11 @@
 
 namespace Infrastracture.Dtos;
 
+/// <summary>
+/// DTO klasa za parsiranje XML podataka
+/// Ova klasa definiše strukturu koja odgovara XML dokumentu i koristi se za
+/// mapiranje XML elemenata na C# objekte putem procesa deserializacije.
+/// </summary>
 [XmlRoot("FindPersonResponse", Namespace = "http://tempuri.org")]
 public class FindPersonResponse
 {

@@ -7,6 +7,12 @@ namespace Infrastracture.Services.CsvReportJob;
 using CustomerRewards.Company.Entities;
 using Microsoft.Extensions.Configuration;
 
+/// <summary>
+/// Servis koji poziva job hangfire
+/// Provjerava da li je prosao 1 mjesec od zavrsetka neke kampanje
+/// Ukoliko jeste, pronalazi korisnike koji su koristili bon u okviru kampanje
+/// Date korisnike smjesta u novokreirani csv fajl
+/// </summary>
 public class CsvReportJob
 {
     private readonly DatabaseContext databaseContext;

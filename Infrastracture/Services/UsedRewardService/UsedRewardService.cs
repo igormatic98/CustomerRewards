@@ -4,6 +4,10 @@ using CustomerRewards.Infrastructure;
 
 namespace Infrastracture.Services.UsedRewardService;
 
+/// <summary>
+/// Servis za unos kupovina, odnosno koji bonovi od strane kojih korisnika su iskoristeni
+/// Pokrece ga prodavac
+/// </summary>
 public class UsedRewardService
 {
     private readonly DatabaseContext databaseContext;

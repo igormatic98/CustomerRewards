@@ -9,6 +9,10 @@ using CustomerRewards.Company.Entities;
 using Infrastracture.Services.ExternalCustomerService;
 using Microsoft.EntityFrameworkCore;
 
+/// <summary>
+/// Servis za dodjeljivanje poklon bona kupcima
+/// Kupci se uzimaju iz eksternog apija, ili lokalnog u zavisnosti da li se nalaze u lokalnoj bazi
+/// </summary>
 public class CustomerRewardService
 {
     private readonly DatabaseContext databaseContext;
@@ -34,6 +38,8 @@ public class CustomerRewardService
         var agentId = tokenReaderService.GetAgentId();
         var campaignId = tokenReaderService.GetCampaignId();
         var currentDate = DateTime.Now.Date;
+
+        //provjeravamo da li je dati agent vec dodijelio 5 bonova na taj dan za tu kampanju
         var numberOfAddedCustomerByAgent = await databaseContext.CustomersRewards
             .Where(
                 cr =>
@@ -42,16 +48,23 @@ public class CustomerRewardService
                     && cr.RewardDate.Date == currentDate
             )
             .CountAsync();
+
         if (numberOfAddedCustomerByAgent > 5)
+        {
             throw new Exception(
                 "Agent added already max(5) customer to reward on this campaign today."
             );
+        }
+
+        //provjeravamo da li je dati korisnik vec dobio poklon bon
 
         var isRewardAlradyGiven = await databaseContext.CustomersRewards.AnyAsync(
             cr => cr.Customer.ExternalId == customerId && cr.CampaignId == campaignId
         );
         if (isRewardAlradyGiven)
+        {
             throw new Exception("Reward is already given to this customer.");
+        }
 
         if (campaignId != 0)
         {
@@ -66,12 +79,14 @@ public class CustomerRewardService
                 );
                 if (!isCustomerInLocalDB)
                 {
+                    //poziv eksternog apija da bi dobili podatke o kupcu, obzirom da se ne nalazi u lokalnoj bazi
                     var findPersonResult = await externalCustomerService.GetExternalCustomer(
                         customerId
                     );
 
                     if (findPersonResult != null)
                     {
+                        //provjeravanmo da li postoji adresa u lokalnoj bazi
                         bool homeExists = await AddressExists(findPersonResult.Home);
                         if (!homeExists)
                         {
@@ -81,7 +96,7 @@ public class CustomerRewardService
                         else
                             home = await GetAdressFromDb(findPersonResult.Home);
 
-                        // Proveri da li postoji office adresa
+                        // Proveri da li postoji office adresa u lokalnoj bazi
                         bool officeExists = await AddressExists(findPersonResult.Office);
                         if (!officeExists)
                         {
@@ -108,11 +123,13 @@ public class CustomerRewardService
                 }
                 else
                 {
+                    //kupac postoji u lokalnoj bazi, odakle ga povlacimo
                     customer = await databaseContext.Customers
                         .Where(c => c.ExternalId == customerId)
                         .FirstOrDefaultAsync();
                 }
 
+                //dodjeljivanje poklon bona korisniku
                 await databaseContext.CustomersRewards.AddAsync(
                     new CustomerReward
                     {
@@ -137,6 +154,7 @@ public class CustomerRewardService
             throw new Exception("Active campaing doesnt exist.");
     }
 
+    //provjera da li adresa postoji u bazi
     public async Task<bool> AddressExists(Dtos.Address address)
     {
         return await databaseContext.Address.AnyAsync(
@@ -148,6 +166,7 @@ public class CustomerRewardService
         );
     }
 
+    //dobijanje adrese iz baze
     public async Task<Address> GetAdressFromDb(Dtos.Address address)
     {
         return await databaseContext.Address

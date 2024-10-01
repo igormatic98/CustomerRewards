@@ -18,6 +18,12 @@ public class UsedRewardController : ControllerBase
         this.usedRewardService = usedRewardService;
     }
 
+    /// <summary>
+    /// Potvrda o uspjesnoj kupovini i koristenju bona od strane nagradjenog kupca
+    /// </summary>
+    /// <param name="customerId">Id kupca</param>
+    /// <param name="usedAmount">Iznos koji je iskoristio od ukupne vrijednosti bona</param>
+    /// <returns></returns>
     [HttpPost("{customerId}/{usedAmount}")]
     [Authorize(Roles = Role.SELLER)]
     public async Task<IActionResult> UsedRewardByCustomer(int customerId, decimal usedAmount)

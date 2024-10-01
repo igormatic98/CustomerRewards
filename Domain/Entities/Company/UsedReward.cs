@@ -3,6 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerRewards.Company.Entities;
 
+/// <summary>
+/// Iskoristeni bonovi
+/// Informacije o tome kada je iskoristen, koliki je iznos bona
+/// </summary>
 [PrimaryKey(nameof(Id))]
 public class UsedReward
 {

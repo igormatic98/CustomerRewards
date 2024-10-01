@@ -5,6 +5,10 @@ using System.Xml.Serialization;
 
 namespace Infrastracture.Services.ExternalCustomerService;
 
+/// <summary>
+/// Servis za eksterni api
+/// Poziv apija, citanje xmla, i deserijalizacija u c# objekat
+/// </summary>
 public class ExternalCustomerService
 {
     private XNamespace soapenv = "http://schemas.xmlsoap.org/soap/envelope/";

@@ -4,6 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerRewards.Company.Entities;
 
+/// <summary>
+/// Putanja do dokumenata generisanih mjesec dana nakon kampanje
+/// Veza na kampanju na koju se odnosi dokument
+/// </summary>
 [PrimaryKey(nameof(Id))]
 public class CampaignDocument
 {

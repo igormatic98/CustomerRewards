@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastracture.HangfireJob;
 
+/// <summary>
+/// Statička klasa koja služi za registrovanje Hangfire jobova i definisanje metoda koje jobovi izvršavaju
+/// </summary>
 public static class HangfireConfigure
 {
     public static void Register(IServiceCollection services, IConfiguration configuration)
@@ -34,7 +37,7 @@ public static class HangfireConfigure
         RecurringJob.AddOrUpdate<CsvReportJob>(
             "Reports",
             cj => cj.FindCustomersWithSuccessfulBuy(),
-            Cron.Daily(09, 00),
+            Cron.Daily(12, 00),
             new RecurringJobOptions() { TimeZone = TimeZoneInfo.Local }
         );
     }

@@ -6,6 +6,9 @@ using CustomerRewards.Catalog.Entities;
 
 namespace CustomerRewards.Company.Entities;
 
+/// <summary>
+/// Agent koji je prosirena versija Usera, kao zaposleni ima poslovni kontakt i adresu
+/// </summary>
 [PrimaryKey(nameof(Id))]
 public class Agent
 {

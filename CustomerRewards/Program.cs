@@ -7,9 +7,13 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Dodavanje servisa u kontejner
 InfrastractureConfigure.Register(builder.Services, builder.Configuration, builder.Environment);
+
+//Registrovanje HangfireJoba
 HangfireConfigure.Register(builder.Services, builder.Configuration);
+
+//Autentifikacija
 builder.Services
     .AddAuthentication(opt =>
     {
@@ -42,6 +46,7 @@ builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
+//Dodavanje Seeda, ukoliko je Development okruzenje
 if (app.Environment.IsDevelopment())
 {
     await Seed.SeedAsync(app, builder.Configuration, builder.Environment);

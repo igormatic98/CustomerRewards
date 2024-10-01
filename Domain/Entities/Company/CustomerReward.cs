@@ -3,6 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerRewards.Company.Entities;
 
+/// <summary>
+/// Poklon bonovi koje unosi agent
+/// Kompozinti kljuc kupac kampanja, da se ne bi desilo da isti kupac dobije dva bona za istu kampanju
+/// Strani kljuc na agenta, da znamo ko je poklonio bon kupcu
+/// </summary>
 [PrimaryKey(nameof(CustomerId), nameof(CampaignId))]
 public class CustomerReward
 {

@@ -18,6 +18,12 @@ public class CustomerRewardController : ControllerBase
         this.customerRewardService = customerRewardService;
     }
 
+    /// <summary>
+    ///Dodjeljivanje popusta vijernim kupcima
+    /// </summary>
+    /// <param name="customerId">Id kupca</param>
+    /// <param name="rewardAmount">Iznos bona koji dobija kupac</param>
+    /// <returns></returns>
     [HttpPost("{customerId}/{rewardAmount}")]
     [Authorize(Roles = Role.AGENT)]
     public async Task<IActionResult> CreateRewardForCustomer(int customerId, decimal rewardAmount)

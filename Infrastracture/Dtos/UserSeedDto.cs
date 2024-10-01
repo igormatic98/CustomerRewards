@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace Infrastracture.Dtos;
 
+/// <summary>
+/// Dto koji se koristi u Seed-u prilikom pokretanja programa
+/// za kreiranje pocetnih vrijednosti u bazi
+/// </summary>
 public class UserSeedDto
 {
     public User User { get; set; }

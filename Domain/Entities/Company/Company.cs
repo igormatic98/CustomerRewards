@@ -4,6 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerRewards.Company.Entities;
 
+/// <summary>
+/// Pocetna tabela, informacije o samoj kompaniji
+/// Ima vise kampanja
+/// </summary>
 [PrimaryKey(nameof(Id))]
 public class Company
 {

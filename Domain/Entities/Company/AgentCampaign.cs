@@ -3,6 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CustomerRewards.Company.Entities;
 
+/// <summary>
+/// Veza izmedju agenta i kampanje
+/// Agent moze da radi na vise kampanja, kampanju vodi vise agenata
+/// </summary>
 [PrimaryKey(nameof(AgentId), nameof(CampaignId))]
 public class AgentCampaign
 {

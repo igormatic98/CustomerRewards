@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CustomerRewards.Controllers.CampaignController;
 
+/// <summary>
+/// Kontroler za generisane dokumente kampanje
+/// </summary>
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/[controller]")]
 [ApiController]
@@ -19,6 +22,11 @@ public class CampaignDocumentController : ControllerBase
         this.databaseContext = databaseContext;
     }
 
+    /// <summary>
+    /// Zahtjev za dobijanje fajla sa podacima o iskoristenim bonovima za kupovinu
+    /// </summary>
+    /// <param name="campaignId">Id kampanje</param>
+    /// <returns></returns>
     [HttpGet("{campaignId}")]
     [Authorize(Roles = "Director,Agent")]
     public async Task<IActionResult> GetCsvDocumentForCampaign(int campaignId)

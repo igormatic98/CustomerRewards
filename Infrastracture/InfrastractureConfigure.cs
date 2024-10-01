@@ -18,52 +18,55 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
-namespace Infrastracture
+namespace Infrastracture;
+
+/// <summary>
+/// Registrovanje servisa, mapera, konekcija sa bazom
+/// Poziva se prilikom pokretanja u program.cs-u
+/// </summary>
+public class InfrastractureConfigure
 {
-    public class InfrastractureConfigure
+    public static void Register(
+        IServiceCollection services,
+        IConfiguration configuration,
+        IWebHostEnvironment environment
+    )
     {
-        public static void Register(
-            IServiceCollection services,
-            IConfiguration configuration,
-            IWebHostEnvironment environment
-        )
+        services.AddDbContext<DatabaseContext>(opts =>
         {
-            services.AddDbContext<DatabaseContext>(opts =>
+            opts.UseSqlServer(configuration["ConnectionString:SQL"]);
+
+            if (environment.IsDevelopment())
             {
-                opts.UseSqlServer(configuration["ConnectionString:SQL"]);
+                opts.EnableSensitiveDataLogging();
+                opts.LogTo(x => Debug.WriteLine(x), LogLevel.Debug);
+            }
+        });
+        #region Auth
+        services.AddScoped<IClaimInjectService, ClaimInjectService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<TokenReaderService>();
 
-                if (environment.IsDevelopment())
-                {
-                    opts.EnableSensitiveDataLogging();
-                    opts.LogTo(x => Debug.WriteLine(x), LogLevel.Debug);
-                }
-            });
-            #region Auth
-            services.AddScoped<IClaimInjectService, ClaimInjectService>();
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<TokenReaderService>();
+        services
+            .AddIdentity<User, Role>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+            .AddEntityFrameworkStores<DatabaseContext>()
+            .AddDefaultTokenProviders();
 
-            services
-                .AddIdentity<User, Role>(options =>
-                {
-                    options.User.RequireUniqueEmail = true;
-                    options.Password.RequireNonAlphanumeric = false;
-                })
-                .AddEntityFrameworkStores<DatabaseContext>()
-                .AddDefaultTokenProviders();
+        #endregion
 
-            #endregion
+        #region
+        services.AddAutoMapper(typeof(MappingProfile));
+        #endregion
 
-            #region
-            services.AddAutoMapper(typeof(MappingProfile));
-            #endregion
-
-            #region Services
-            services.AddScoped<ExternalCustomerService>();
-            services.AddScoped<CustomerRewardService>();
-            services.AddScoped<UsedRewardService>();
-            services.AddScoped<GenerateCsvFileService>();
-            #endregion
-        }
+        #region Services
+        services.AddScoped<ExternalCustomerService>();
+        services.AddScoped<CustomerRewardService>();
+        services.AddScoped<UsedRewardService>();
+        services.AddScoped<GenerateCsvFileService>();
+        #endregion
     }
 }

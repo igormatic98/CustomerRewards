@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Infrastracture.Dtos;
 
-namespace Infrastracture.Dtos;
-
+/// <summary>
+/// Obzirom da nije navedeno koje podatke treba da sadrzi .csv fajl
+/// ovo su osnovni podaci za koje se smatra da su dovolji da obavjeste o uspjesnoj kupovini i koristenju bona
+/// </summary>
 public class CustomerFileResultDto
 {
     public string Name { get; set; }

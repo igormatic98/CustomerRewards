@@ -10,6 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastracture.Seed;
 
+/// <summary>
+/// Pokrece se prilikom pokretanja aplikacije
+/// Inicijalno pokretanje baze podataka sa korisnicima, rolama, kompanijom i agentom
+/// </summary>
 public static class Seed
 {
     private const string Password = "Test123";
@@ -27,6 +31,7 @@ public static class Seed
         var databaseContext = services.GetRequiredService<DatabaseContext>();
 
         string[] roles = { Role.DIRECTOR, Role.AGENT, Role.CUSTOMER, Role.SELLER };
+        //dodavanje rola
         foreach (var role in roles)
         {
             if (!await roleManager.RoleExistsAsync(role))
@@ -59,7 +64,7 @@ public static class Seed
                     );
             }
         }
-
+        //dodavanje tri korisnika sa tri razlicite role dirketor, agent, saler
         await CreateUsers(
             new List<UserSeedDto>
             {
@@ -124,9 +129,7 @@ public static class Seed
                 if (result.Succeeded)
                 {
                     await userDto.UserManager.AddToRoleAsync(userDto.User, userDto.RoleName);
-
-                    //Ovaj dio se moze zakomentarisati ukoliko se zeli testirati preko apija, na ovaj nacin sam skratio posao
-                    //nije toliki fokus na samoj kompaniji
+                    //Kreiranje Kompanije, kampanje i agenta, jer nije toliki fokus na apijima za njihovo kreiranje
                     using (
                         var transaction =
                             await userDto.DatabaseContext.Database.BeginTransactionAsync()

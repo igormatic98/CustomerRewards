@@ -7,12 +7,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CustomerRewards.Infrastructure
 {
+    /// <summary>
+    /// DatabaseContext klasa predstavlja glavnu tačku komunikacije sa bazom podataka.
+    /// Ova klasa nasleđuje IdentityDbContext kako bi podržala ASP.NET Core Identity funkcionalnost
+    /// i omogućila autentifikaciju i autorizaciju korisnika.
+    /// </summary>
     public class DatabaseContext
         : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> dbContextOptions)
             : base(dbContextOptions)
         {
+            ///  Promenjen je QueryTrackingBehavior na NoTracking kako bi se
+            ///  smanjilo opterećenje memorije za čitanje podataka
             this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 

@@ -9,6 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CustomerRewards.Company.Entities;
 
+/// <summary>
+/// Kampanja vezana za kompaniju
+/// Sadrzi podatke kada je pocela, zavrsila
+/// Kampanju moze da vodi vise agenata
+/// </summary>
 [PrimaryKey(nameof(Id))]
 public class Campaign
 {

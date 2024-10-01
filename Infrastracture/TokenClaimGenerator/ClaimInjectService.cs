@@ -8,6 +8,10 @@ using System.Security.Claims;
 
 namespace Infrastracture.TokenClaimGenerator;
 
+/// <summary>
+/// Servis za kreiranje dodatnih claim-ova u zavisnosti od role
+/// Poziva se prilikom prijave korisnika i generisanja tokena
+/// </summary>
 public class ClaimInjectService : IClaimInjectService
 {
     private readonly DatabaseContext databaseContext;
@@ -25,6 +29,7 @@ public class ClaimInjectService : IClaimInjectService
         var claims = new List<Claim>();
         var roles = await userManager.GetRolesAsync(user);
 
+        //Ukoliko je korisnik u roli Agenta, u tokenu ce mu biti i AgentId, kao i aktivna kampanja za koju je zaduzen
         if (roles.Any(r => r == Role.AGENT))
         {
             var activeCampaign = await databaseContext.AgentCampaigns
@@ -53,6 +58,7 @@ public class ClaimInjectService : IClaimInjectService
                 );
             }
         }
+        //Ukoliko je korisnik u roli prodavca, u svom tokenu ima informaciju o aktivnoj kampanji
         if (roles.Any(r => r == Role.SELLER))
         {
             var activeCampaignId = await databaseContext.Campaigns

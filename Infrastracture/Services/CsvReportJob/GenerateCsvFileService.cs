@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace Infrastracture.Services.CsvReportJob;
 
+/// <summary>
+/// Servis za generisanje csv fajla, kao i kreiranje foldera gdje ce se fajlovi nalaziti (ukoliko vec ne postoji)
+/// </summary>
 public class GenerateCsvFileService
 {
     private readonly IConfiguration configuration;
