@@ -156,7 +156,7 @@ public static class Seed
                                     {
                                         new Campaign
                                         {
-                                            Name = "Energija buducnosti ",
+                                            Name = "Energija buducnosti",
                                             StartDate = new DateTime(DateTime.Now.Year, 10, 1),
                                             EndDate = new DateTime(DateTime.Now.Year, 11, 15),
                                             AgentCampaigns = new List<AgentCampaign>

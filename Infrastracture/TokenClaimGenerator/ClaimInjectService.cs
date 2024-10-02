@@ -23,7 +23,7 @@ public class ClaimInjectService : IClaimInjectService
         this.userManager = userManager;
     }
 
-    public async Task<List<Claim>> InjectClaimsForToken(User user, string oldAccessToken)
+    public async Task<List<Claim>> InjectClaimsForToken(User user)
     {
         var currentDate = DateTime.Now;
         var claims = new List<Claim>();

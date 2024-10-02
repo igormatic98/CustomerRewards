@@ -167,10 +167,7 @@ public class AuthenticationService : IAuthenticationService
         {
             foreach (var claimInjectService in ClaimInjectServices)
             {
-                var injectClaims = await claimInjectService.InjectClaimsForToken(
-                    user,
-                    oldAccessToken
-                );
+                var injectClaims = await claimInjectService.InjectClaimsForToken(user);
 
                 foreach (var claim in injectClaims)
                 {

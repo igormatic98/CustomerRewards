@@ -39,13 +39,12 @@ public class CampaignDocumentController : ControllerBase
 
         //ukoliko nema datog fajla obavjestavamo o tome
         if (path == null)
-            return NotFound();
+            return NotFound("File is not generated.");
 
         var fullPath = Path.Combine(currentPath, path);
         if (!System.IO.File.Exists(fullPath))
-        {
             return NotFound("File not found on the server.");
-        }
+
         var bytes = System.IO.File.ReadAllBytes(fullPath);
         return File(bytes, "application/octet-stream", Path.GetFileName(fullPath));
     }

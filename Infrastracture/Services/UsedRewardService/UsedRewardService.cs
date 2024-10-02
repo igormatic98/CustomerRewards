@@ -49,13 +49,16 @@ public class UsedRewardService
                     }
             )
             .FirstOrDefaultAsync();
+
+        if (customerRewardsAmountInfo == null)
+            throw new Exception("This customer has no reward.");
+
         if (
             customerRewardsAmountInfo.totalUsedAmount + usedAmount
             > customerRewardsAmountInfo.RewardAmount
         )
-        {
             throw new Exception("The total used amount exceeds the available reward.");
-        }
+
         await databaseContext.UsedRewards.AddAsync(
             new UsedReward
             {

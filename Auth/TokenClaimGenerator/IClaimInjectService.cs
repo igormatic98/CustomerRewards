@@ -5,5 +5,5 @@ namespace CustomerRewards.Auth.TokenClaimGenerator;
 
 public interface IClaimInjectService
 {
-    Task<List<Claim>> InjectClaimsForToken(User user, string oldAccessToken);
+    Task<List<Claim>> InjectClaimsForToken(User user);
 }
