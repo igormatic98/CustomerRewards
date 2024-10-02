@@ -42,12 +42,25 @@ namespace Auth.Services
 
         public int GetAgentId()
         {
-            return int.Parse(GetClaimValue(CustomClaimTypes.AgentId));
+            if (int.TryParse(GetClaimValue(CustomClaimTypes.AgentId), out int agentId))
+            {
+                return agentId;
+            }
+            return default;
         }
 
         public int GetCampaignId()
         {
-            return int.Parse(GetClaimValue(CustomClaimTypes.ActiveCampaign));
+            if (
+                int.TryParse(
+                    GetClaimValue(CustomClaimTypes.ActiveCampaign),
+                    out int activeCampaignId
+                )
+            )
+            {
+                return activeCampaignId;
+            }
+            return default;
         }
     }
 }

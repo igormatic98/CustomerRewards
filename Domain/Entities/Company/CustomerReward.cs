@@ -25,4 +25,5 @@ public class CustomerReward
     public Agent Agent { get; set; }
     public DateTime RewardDate { get; set; }
     public decimal RewardAmount { get; set; }
+    public ICollection<UsedReward> UsedRewards { get; set; }
 }
