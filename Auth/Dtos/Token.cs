@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CustomerRewards.Auth.Dtos;
+﻿namespace CustomerRewards.Auth.Dtos;
 
 public class Token
 {

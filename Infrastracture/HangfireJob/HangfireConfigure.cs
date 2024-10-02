@@ -1,5 +1,4 @@
 ﻿using Hangfire;
-using Hangfire.SqlServer;
 using Infrastracture.Services.CsvReportJob;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
